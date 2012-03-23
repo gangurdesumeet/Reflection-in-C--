@@ -1,0 +1,75 @@
+#include "Value.hpp"
+#include <typeinfo>
+#include <iostream>
+#include <assert.h>
+
+using namespace std;
+
+
+
+namespace cs540 {
+
+
+void
+IntegerValue::print() const {
+    cout<<this->j<<"\n";
+    //assert(false);
+}
+
+const IntegerValue *
+IntegerValue::addition(const Value *ab) const {
+const IntegerValue *abc=dynamic_cast<const IntegerValue *>(ab);
+
+int p=abc->value();
+const IntegerValue *ptr=new IntegerValue(j+p);
+return(ptr);
+  //  assert(false);
+}
+
+void
+StringValue::print() const {
+cout<<this->j<<"\n";
+//    assert(false);
+}
+
+const StringValue *
+StringValue::addition(const Value *ab) const {
+const StringValue *abc=dynamic_cast<const StringValue *>(ab);
+std::string p=abc->value();
+const StringValue *ptr=new StringValue(j+p);
+return(ptr);
+
+//    assert(false);
+}
+const StringValue *
+StringValue::multiplication(const Value *ab) const {
+return 0;
+}
+
+const IntegerValue *
+IntegerValue::multiplication(const Value *ab) const {
+const IntegerValue *abc=dynamic_cast<const IntegerValue *>(ab);
+int p=abc->value();
+const IntegerValue *ptr=new IntegerValue(j*p);
+return(ptr);
+
+
+}
+
+void
+ObjPtrValue::print() const {
+    //assert(false);
+}
+
+const ObjPtrValue *
+ObjPtrValue::addition(const Value *) const {
+    //assert(false);
+}
+
+const ObjPtrValue *
+ObjPtrValue::multiplication(const Value *ab) const {
+return 0;
+}
+
+
+}

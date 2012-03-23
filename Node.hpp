@@ -1,0 +1,154 @@
+#ifndef CS540_NODE_HPP
+#define CS540_NODE_HPP
+
+
+#include <string>
+#include <deque>
+#include "Value.hpp"
+
+namespace cs540 {
+
+
+class IntegerToken;
+class IdentToken;
+class StringToken;
+class Token;
+
+
+class Node {
+    public:
+        virtual ~Node() {}
+        virtual const Value *execute() const = 0;
+};
+
+class VoidNode : public Node {
+    public:
+        virtual const Value *execute() const { return 0; }
+};
+
+class AssignmentNode : public Node {
+    public:
+	const Node *p;
+	const Token *imp;
+	const IntegerToken *q;
+	//const StringNode *st;
+	//const IntegerNode *node_info;
+        AssignmentNode(const Token *, const Node *);
+        virtual const Value *execute() const;
+    private:
+};
+
+class VarNode : public Node {
+    public:
+	const IdentToken *q;
+	Value *r;
+        VarNode(const Token *);
+        virtual const Value *execute() const;
+    private:
+};
+
+class IntegerNode : public Node {
+    public:
+	//const Node *p;
+	const  IntegerToken *prt;
+	const Value *val;
+	const IntegerToken *q;
+        IntegerNode(const Token *);
+        virtual const Value *execute() const;
+    private:
+};
+
+class StringNode : public Node {
+    public:
+	const StringToken *strq;
+	const Value *val;
+        StringNode(const Token *);
+        virtual const Value *execute() const;
+    private:
+};
+
+class AdditionNode : public Node {
+    public:
+	const Node *first,*second;
+        AdditionNode(const Node *l, const Node *r) {
+	first=l;
+	second=r;
+
+}
+        virtual const Value *execute() const;
+    private:
+};
+
+class MultiplicationNode : public Node {
+    public:
+	const Node *first,*second;
+        MultiplicationNode(const Node *l, const Node *r) {
+	first=l;
+	second=r;
+
+}
+        virtual const Value *execute() const { 
+//	cout<<"in mult\n";
+	const Value *tmp=first->execute();
+	const Value *tmp2=second->execute();
+	const Value *ret=tmp->multiplication(tmp2);
+	return(ret);
+
+
+
+
+ }
+    private:
+};
+
+class NegationNode : public Node {
+    public:
+	const Node *p;
+	//Value *val;
+        NegationNode(const Node *e) {
+	p=e;
+}
+        virtual const Value *execute() const { 
+	const Value *tmp=p->execute();
+	const IntegerValue *tmp1=dynamic_cast<const IntegerValue *>(tmp);
+	int k=tmp1->value();
+	const Value *val=new IntegerValue(-k) ;
+	return val;
+ }
+    private:
+};
+
+class NewNode : public Node {
+    public:
+	const Token *p;
+	const IdentToken *q;
+	const Value *val;
+        NewNode(const Token *);
+        virtual const Value *execute() const;
+    private:
+};
+
+class PrintNode : public Node {
+    public:
+	const Node *p;
+        PrintNode(const Node *n);
+        virtual const Value *execute() const;
+    private:
+};
+
+class ArgList;
+
+class InvocationNode : public Node {
+    public:
+	const Token *first,*second;
+	const IdentToken *q,*p;
+	//const deque<const Node *> *d_q;
+        InvocationNode(const Token *, const Token *, const std::deque<const Node *> *);
+        virtual const Value *execute() const;
+    private:
+};
+}
+
+
+
+#endif
